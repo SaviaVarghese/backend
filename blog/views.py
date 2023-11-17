@@ -22,3 +22,10 @@ def add(request):
         else:
             return HttpResponse(json.dumps({"status":"failed"}))
 
+
+@csrf_exempt
+def view(request):
+    if request.method=="POST":
+        blogList=BlogModel.objects.all()
+        serialized=BlogSerializer(blogList,many=True)
+        return HttpResponse(json.dumps(serialized.data))
