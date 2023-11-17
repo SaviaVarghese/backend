@@ -4,6 +4,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from blog.models import BlogModel
 from blog.serializer import BlogSerializer
+from blog.serializer import UserSerializer
 from django.db.models import Q
 
 
@@ -37,3 +38,16 @@ def search(request):
         getTitle=received_data["title"]
         data=list(BlogModel.objects.filter(Q(title__icontains=getTitle)).values())
         return HttpResponse(json.dumps(data))
+    
+@csrf_exempt
+def useradd(request):
+    if request.method=="POST":
+        received_data=json.loads(request.body)
+        print(received_data)
+
+        check=UserSerializer(data=received_data)
+        if check.is_valid():
+            check.save()
+            return HttpResponse(json.dumps({"status":"success"}))
+        else:
+            return HttpResponse(json.dumps({"status":"failed"}))
