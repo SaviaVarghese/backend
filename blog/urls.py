@@ -5,4 +5,5 @@ urlpatterns = [
     path('add/',views.add,name='add'),
     path('view/',views.view,name='view'),
     path('search/',views.search,name='search'),
+    path('useradd/',views.useradd,name='useradd'),
 ]
