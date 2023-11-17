@@ -4,7 +4,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from blog.models import BlogModel
 from blog.serializer import BlogSerializer
-# from django.db.models import Q
+from django.db.models import Q
 
 
 
@@ -29,3 +29,11 @@ def view(request):
         blogList=BlogModel.objects.all()
         serialized=BlogSerializer(blogList,many=True)
         return HttpResponse(json.dumps(serialized.data))
+
+@csrf_exempt
+def search(request):
+    if request.method=="POST":
+        received_data=json.loads(request.body)
+        getTitle=received_data["title"]
+        data=list(BlogModel.objects.filter(Q(title__icontains=getTitle)).values())
+        return HttpResponse(json.dumps(data))
