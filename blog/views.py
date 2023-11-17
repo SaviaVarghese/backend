@@ -29,3 +29,6 @@ def view(request):
         blogList=BlogModel.objects.all()
         serialized=BlogSerializer(blogList,many=True)
         return HttpResponse(json.dumps(serialized.data))
+    
+
+
